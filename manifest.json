@@ -1,0 +1,24 @@
+{
+  "name": "双端拾词助手",
+  "version": "1.0",
+  "description": "使用双端拾词助手，在浏览器上翻译单词并添加至生词本，在小程序复习，简单方便。",
+  "permissions": ["activeTab"],
+  "action": {
+    "default_popup": "index.html",
+    "default_icon": "icon.png"
+  },
+  "icons": {
+    "16": "icon.png",
+    "32": "icon.png",
+    "48": "icon.png",
+    "128": "icon.png"
+  },
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["content.js"],
+      "css": ["content.css"]
+    }
+  ],
+  "manifest_version": 3
+}
