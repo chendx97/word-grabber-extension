@@ -1,7 +1,7 @@
 {
   "name": "双端拾词助手",
   "version": "1.0",
-  "description": "使用双端拾词助手，在浏览器上翻译单词并添加至生词本，在小程序复习，简单方便。",
+  "description": "一键获取英文单词释义，支持即时翻译、单词收藏，配套微信小程序帮你科学记忆、高效复习。让学习事半功倍！",
   "permissions": ["activeTab"],
   "action": {
     "default_popup": "index.html",
