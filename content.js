@@ -71,6 +71,13 @@ document.addEventListener('mouseup', async function (e) {
     if (isEnglishWord(word)) {
       const result = await translate(word);
       if (result && result?.means?.length) {
+        // 收藏icon
+        if (wordList.some(item => item.word === word)) {
+          headerRight.innerHTML = IconCollected + collectBtn.outerHTML;
+        } else {
+          headerRight.innerHTML = IconCollect + collectBtn.outerHTML;
+        }
+
         tip.classList.add('hide');
         headerRight.classList.remove('hide');
 
@@ -103,6 +110,8 @@ document.addEventListener('mouseup', async function (e) {
       visibility: 'visible',
       opacity: '1',
     });
+  } else {
+    hideCard();
   }
 });
 function isEnglishWord(word) {
@@ -135,12 +144,25 @@ async function translate(text) {
   }
 }
 
+// 收藏/取消收藏功能
+let wordList = [];
+// 初始化时从storage获取单词列表
+chrome.storage.local.get(['wordGrabberList'], (result) => {
+  wordList = result.wordGrabberList || [];
+});
+
+// 监听来自background的消息
+chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+  if (message.type === 'WORD_GRABBER_UPDATE') {
+    wordList = message.data;
+  }
+});
 headerRight.addEventListener('click', async () => {
-  const res = await collect(selectWord, translateRes);
-  if (res) {
-    headerRight.firstElementChild.outerHTML = IconCollected;
+  const isCollected = wordList.some(item => item.word === selectWord);
+  if (isCollected) {
+    cancelCollect(selectWord);
   } else {
-    console.log('收藏失败');
+    collect(selectWord, translateRes);
   }
 });
 async function collect(word, cn) {
@@ -157,9 +179,40 @@ async function collect(word, cn) {
       }),
     });
     const { message } = await response.json();
-    return message === 'success';
+    if (message === 'success') {
+      headerRight.firstElementChild.outerHTML = IconCollected;
+      wordList.push({ word, cn });
+      chrome.runtime.sendMessage({
+        type: 'WORD_GRABBER_UPDATE',
+        data: wordList,
+      });
+    }
   } catch (error) {
     console.error(error);
-    return false;
+  }
+}
+async function cancelCollect(word) {
+  try {
+    const response = await fetch('http://localhost:3000/api/word/delete', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        word,
+        userId: 'test',
+      }),
+    });
+    const { message } = await response.json();
+    if (message === 'success') {
+      headerRight.firstElementChild.outerHTML = IconCollect;
+      wordList = wordList.filter(item => item.word !== word);
+      chrome.runtime.sendMessage({
+        type: 'WORD_GRABBER_UPDATE',
+        data: wordList,
+      });
+    }
+  } catch (error) {
+    console.error(error);
   }
 }
