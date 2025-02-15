@@ -90,8 +90,8 @@ document.addEventListener('mouseup', async function (e) {
         showTip('暂无翻译结果');
       }
     } else {
-      wordDom.textContent = selection.toString();
-      showTip('请选择一个单词');
+      hideCard();
+      return;
     }
 
     const xMid = (rect.left + rect.right) / 2;
@@ -103,11 +103,6 @@ document.addEventListener('mouseup', async function (e) {
       visibility: 'visible',
       opacity: '1',
     });
-  } else {
-    menuDom.style.opacity = '0';
-    timer = setTimeout(() => {
-      menuDom.style.visibility = 'hidden';
-    }, 200);
   }
 });
 function isEnglishWord(word) {
@@ -122,6 +117,12 @@ function showTip(str) {
   tip.textContent = str;
   tip.classList.remove('hide');
   headerRight.classList.add('hide');
+}
+function hideCard() {
+  menuDom.style.opacity = '0';
+  timer = setTimeout(() => {
+    menuDom.style.visibility = 'hidden';
+  }, 200);
 }
 async function translate(text) {
   try {
