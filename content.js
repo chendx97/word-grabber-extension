@@ -33,7 +33,6 @@ menuDom.appendChild(means);
 // 提示语模块
 const tip = document.createElement('div');
 tip.classList.add('tip');
-tip.textContent = '请选择一个单词';
 menuDom.appendChild(tip);
 
 document.documentElement.appendChild(menuDom);
@@ -58,32 +57,37 @@ document.addEventListener('mouseup', async function (e) {
   const selection = document.getSelection();
   if (selection.toString().length > 0) {
     const word = selection.toString().trim();
-    const result = await translate(word);
     const wordDom = document.querySelector('.word');
     const headerRight = document.querySelector('.header-right');
+    const rect = selection.getRangeAt(0).getBoundingClientRect();
+
     const meansDom = document.querySelector('.means');
-
     meansDom.innerHTML = '';
-    if (result && result?.means?.length) {
-      tip.classList.add('hide');
-      headerRight.classList.remove('hide');
 
-      wordDom.textContent = result.key;
+    if (isEnglishWord(word)) {
+      const result = await translate(word);
+      if (result && result?.means?.length) {
+        tip.classList.add('hide');
+        headerRight.classList.remove('hide');
 
-      // 含义模块
-      for (let i = 0; i < result?.means?.length; i++) {
-        const mean = document.createElement('div');
-        mean.classList.add('mean-item');
-        mean.textContent = `${result.means[i].part} ${result.means[i].means}`;
-        meansDom.appendChild(mean);
+        wordDom.textContent = result.key;
+
+        // 含义模块
+        for (let i = 0; i < result?.means?.length; i++) {
+          const mean = document.createElement('div');
+          mean.classList.add('mean-item');
+          mean.textContent = `${result.means[i].part} ${result.means[i].means}`;
+          meansDom.appendChild(mean);
+        }
+      } else {
+        wordDom.textContent = selection.toString();
+        showTip('暂无翻译结果');
       }
     } else {
-      tip.classList.remove('hide');
       wordDom.textContent = selection.toString();
-      headerRight.classList.add('hide');
+      showTip('请选择一个单词');
     }
 
-    const rect = selection.getRangeAt(0).getBoundingClientRect();
     const xMid = (rect.left + rect.right) / 2;
     const menuWidth = menuDom.offsetWidth;
     arrow.style.left = (menuWidth / 2 - 8) + 'px';
@@ -103,6 +107,21 @@ document.addEventListener('mouseup', async function (e) {
 headerRight.addEventListener('click', () => {
   console.log('收藏');
 });
+
+function isEnglishWord(word) {
+  const englishWordPattern = /^[a-zA-Z]+(?:[-'][a-zA-Z]+)*$/;
+  const singleLetterWords = new Set(['a', 'i', 'A', 'I']);
+  if (word.length === 1 && !singleLetterWords.has(word)) {
+    return false;
+  }
+  return englishWordPattern.test(word);
+}
+
+function showTip(str) {
+  tip.textContent = str;
+  tip.classList.remove('hide');
+  headerRight.classList.add('hide');
+}
 
 async function translate(text) {
   try {
