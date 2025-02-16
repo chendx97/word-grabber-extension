@@ -38,6 +38,7 @@ async function initWordList() {
   try {
     const params = new URLSearchParams({
       userId: 'test',
+      isAll: true,
     });
     const response = await fetch(`http://localhost:3000/api/word/list?${params}`, {
       method: 'GET',

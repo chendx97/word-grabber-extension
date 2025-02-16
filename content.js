@@ -46,7 +46,7 @@ menuDom.addEventListener('mousedown', (e) => {
   e.stopPropagation();
 });
 
-let selectWord, translateRes;
+let selectWord, translateRes, paraphrase;
 document.addEventListener('mouseup', async function (e) {
   // 如果点击的是菜单内部，不做处理
   if (menuDom.contains(e.target)) {
@@ -83,6 +83,7 @@ document.addEventListener('mouseup', async function (e) {
 
         selectWord = result.key;
         translateRes = result.means;
+        paraphrase = result.paraphrase;
         wordDom.textContent = result.key;
 
         // 含义模块
@@ -105,7 +106,7 @@ document.addEventListener('mouseup', async function (e) {
     const menuWidth = menuDom.offsetWidth;
     const viewportWidth = window.innerWidth;
     const viewportHeight = window.innerHeight;
-    
+
     // 计算左侧位置，确保不超出视口
     let leftPos = xMid - menuWidth / 2;
     // 如果太靠右，左移
@@ -124,7 +125,7 @@ document.addEventListener('mouseup', async function (e) {
     // 计算顶部位置
     let topPos = rect.bottom + 10;
     const menuHeight = menuDom.offsetHeight;
-    
+
     // 如果底部超出视口，显示在选中文本上方
     if (topPos + menuHeight > viewportHeight - 20) {
       topPos = rect.top - menuHeight - 10;
@@ -199,10 +200,10 @@ headerRight.addEventListener('click', async () => {
   if (isCollected) {
     cancelCollect(selectWord);
   } else {
-    collect(selectWord, translateRes);
+    collect(selectWord, translateRes, paraphrase);
   }
 });
-async function collect(word, cn) {
+async function collect(word, cn, paraphrase) {
   try {
     const response = await fetch('http://localhost:3000/api/word/add', {
       method: 'POST',
@@ -212,6 +213,7 @@ async function collect(word, cn) {
       body: JSON.stringify({
         word,
         cn,
+        paraphrase,
         userId: 'test',
       }),
     });
