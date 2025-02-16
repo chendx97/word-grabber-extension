@@ -103,10 +103,47 @@ document.addEventListener('mouseup', async function (e) {
 
     const xMid = (rect.left + rect.right) / 2;
     const menuWidth = menuDom.offsetWidth;
-    arrow.style.left = (menuWidth / 2 - 8) + 'px';
+    const viewportWidth = window.innerWidth;
+    const viewportHeight = window.innerHeight;
+    
+    // 计算左侧位置，确保不超出视口
+    let leftPos = xMid - menuWidth / 2;
+    // 如果太靠右，左移
+    if (leftPos + menuWidth > viewportWidth - 20) {
+      leftPos = viewportWidth - menuWidth - 20;
+    }
+    // 如果太靠左，右移
+    if (leftPos < 20) {
+      leftPos = 20;
+    }
+
+    // 计算箭头位置，箭头应该对准选中文本的中心
+    const arrowLeftPos = Math.max(8, Math.min(menuWidth - 16, xMid - leftPos - 8));
+    arrow.style.left = arrowLeftPos + 'px';
+
+    // 计算顶部位置
+    let topPos = rect.bottom + 10;
+    const menuHeight = menuDom.offsetHeight;
+    
+    // 如果底部超出视口，显示在选中文本上方
+    if (topPos + menuHeight > viewportHeight - 20) {
+      topPos = rect.top - menuHeight - 10;
+      // 移动箭头到底部
+      arrow.style.top = 'auto';
+      arrow.style.bottom = '-8px';
+      arrow.style.borderWidth = '8px 8px 0 8px';
+      arrow.style.borderColor = '#ffffff transparent transparent transparent';
+    } else {
+      // 恢复箭头到顶部的默认样式
+      arrow.style.top = '-8px';
+      arrow.style.bottom = 'auto';
+      arrow.style.borderWidth = '0 8px 8px 8px';
+      arrow.style.borderColor = 'transparent transparent #ffffff transparent';
+    }
+
     Object.assign(menuDom.style, {
-      left: (xMid - menuWidth / 2) + 'px',
-      top: (rect.bottom + 10) + 'px',
+      left: leftPos + 'px',
+      top: topPos + 'px',
       visibility: 'visible',
       opacity: '1',
     });
