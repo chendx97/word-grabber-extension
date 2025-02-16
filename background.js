@@ -50,7 +50,7 @@ async function initWordList() {
 
     if (message === 'success') {
       // 存储到本地
-      chrome.storage.local.set({ wordGrabberList: result });
+      chrome.storage.local.set({ wordGrabberList: result.words });
     }
   } catch (error) {
     console.error('获取单词列表失败:', error);
