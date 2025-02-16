@@ -50,8 +50,6 @@ async function initWordList() {
     if (message === 'success') {
       // 存储到本地
       chrome.storage.local.set({ wordGrabberList: result });
-      // 初始化时不需要排除任何标签页
-      broadcastWordListUpdate(result);
     }
   } catch (error) {
     console.error('获取单词列表失败:', error);
