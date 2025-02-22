@@ -37,10 +37,10 @@ function broadcastWordListUpdate(wordList, excludeTabId) {
 async function initWordList() {
   try {
     const params = new URLSearchParams({
-      userId: 'test',
+      user: 'osWEf5SU7AwjgT1qJP6qwZdG7pJA',
       isAll: true,
     });
-    const response = await fetch(`http://localhost:3000/api/word/list?${params}`, {
+    const response = await fetch(`https://word.fyzzz.cn/api/word/list?${params}`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',

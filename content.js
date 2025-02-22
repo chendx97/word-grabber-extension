@@ -173,7 +173,7 @@ function hideCard() {
 }
 async function translate(text) {
   try {
-    const response = await fetch(`http://localhost:3000/api/translate?word=${text}`);
+    const response = await fetch(`https://word.fyzzz.cn/api/translate?word=${text}`);
     const { result } = await response.json();
     return result;
   } catch (error) {
@@ -205,7 +205,7 @@ headerRight.addEventListener('click', async () => {
 });
 async function collect(word, cn, paraphrase) {
   try {
-    const response = await fetch('http://localhost:3000/api/word/add', {
+    const response = await fetch('https://word.fyzzz.cn/api/word/add', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -214,7 +214,7 @@ async function collect(word, cn, paraphrase) {
         word,
         cn,
         paraphrase,
-        userId: 'test',
+        user: 'osWEf5SU7AwjgT1qJP6qwZdG7pJA',
       }),
     });
     const { message } = await response.json();
@@ -232,14 +232,14 @@ async function collect(word, cn, paraphrase) {
 }
 async function cancelCollect(word) {
   try {
-    const response = await fetch('http://localhost:3000/api/word/delete', {
+    const response = await fetch('https://word.fyzzz.cn/api/word/delete', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
         word,
-        userId: 'test',
+        user: 'osWEf5SU7AwjgT1qJP6qwZdG7pJA',
       }),
     });
     const { message } = await response.json();
