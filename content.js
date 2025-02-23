@@ -205,6 +205,7 @@ headerRight.addEventListener('click', async () => {
 });
 async function collect(word, cn, paraphrase) {
   try {
+    const { phonetic, audio } = await getAudio(word);
     const response = await fetch('https://word.fyzzz.cn/api/word/add', {
       method: 'POST',
       headers: {
@@ -215,6 +216,8 @@ async function collect(word, cn, paraphrase) {
         cn,
         paraphrase,
         user: 'osWEf5SU7AwjgT1qJP6qwZdG7pJA',
+        phonetic,
+        audio,
       }),
     });
     const { message } = await response.json();
@@ -228,6 +231,22 @@ async function collect(word, cn, paraphrase) {
     }
   } catch (error) {
     console.error(error);
+  }
+}
+async function getAudio(word) {
+  let phonetic, audio;
+  const response = await fetch(`https://api.dictionaryapi.dev/api/v2/entries/en/${word}`);
+  const res = await response.json();
+  for (let i = 0; i < res[0].phonetics.length; i++) {
+    if (res[0].phonetics[i].text && res[0].phonetics[i].audio) {
+      phonetic = res[0].phonetics[i].text;
+      audio = res[0].phonetics[i].audio;
+      break;
+    }
+  }
+  return {
+    phonetic,
+    audio,
   }
 }
 async function cancelCollect(word) {
