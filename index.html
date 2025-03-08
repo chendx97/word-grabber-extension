@@ -1,6 +1,121 @@
-<html>
-  <body>
-    <h1>Hello Extensions</h1>
-    <script src="popup.js"></script>
-  </body>
+<html lang="zh-CN">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>双端拾词助手</title>
+  <style>
+    body {
+      width: 300px;
+      padding: 20px;
+      position: relative;
+      margin: 0;
+    }
+
+    .user-info {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 5px;
+    }
+
+    .user-info img {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      object-fit: cover;
+    }
+
+    .user-info .username {
+      font-size: 14px;
+      color: #333;
+      max-width: 100px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .title {
+      font-size: 24px;
+      margin-top: 50px;
+      text-align: center;
+      color: #333;
+    }
+
+    .content {
+      padding: 20px 0;
+      height: 200px;
+      text-align: center;
+    }
+
+    .logged-in-content {
+      display: none; /* 默认隐藏登录后的内容 */
+    }
+
+    #qrcode-container {
+      width: 200px;
+      height: 200px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    #qrcode-img {
+      width: 100%;
+      aspect-ratio: 1/1;
+    }
+
+    .logo {
+      width: 100px;
+    }
+
+    .desc {
+      margin-top: 10px;
+      font-size: 14px;
+      color: #666;
+    }
+
+    .links {
+      margin-top: 20px;
+      text-align: center;
+    }
+
+    .links a {
+      margin: 0 10px;
+      color: #1a73e8;
+      text-decoration: none;
+    }
+
+    .links a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="user-info" id="user-info">
+    <img id="avatar" src="icon.png" alt="用户头像">
+    <div class="username" id="username">未登录</div>
+  </div>
+  <h1 class="title">双端拾词助手</h1>
+  
+  <div class="content">
+    <div id="qrcode-container"></div>
+    <div class="logged-in-content" id="logged-in-content">
+      <img class="logo" src="icon.png" alt="logo" />
+      <div class="desc">在浏览器收藏单词，在微信小程序复习</div>
+    </div>
+  </div>
+
+  <div class="links">
+    <a href="https://chendx.com" target="_blank">使用文档</a>
+    <a href="https://chendx.com" target="_blank">作者</a>
+  </div>
+  <script src="popup.js"></script>
+</body>
+
 </html>

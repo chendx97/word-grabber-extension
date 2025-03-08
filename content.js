@@ -166,9 +166,17 @@ function showTip(str) {
   headerRight.classList.add('hide');
 }
 function hideCard() {
+  // 清除所有定时器
+  if (timer) {
+    clearTimeout(timer);
+    timer = null;
+  }
   menuDom.style.opacity = '0';
   timer = setTimeout(() => {
     menuDom.style.visibility = 'hidden';
+    // 清除定时器
+    clearTimeout(timer);
+    timer = null;
   }, 200);
 }
 async function translate(text) {
@@ -181,6 +189,14 @@ async function translate(text) {
     return null;
   }
 }
+
+// 页面卸载时清理
+window.addEventListener('unload', () => {
+  if (timer) {
+    clearTimeout(timer);
+    timer = null;
+  }
+});
 
 // 收藏/取消收藏功能
 let wordList = [];

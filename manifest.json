@@ -2,7 +2,23 @@
   "name": "双端拾词助手",
   "version": "1.0",
   "description": "一键获取英文单词释义，支持即时翻译、单词收藏，配套微信小程序帮你科学记忆、高效复习。让学习事半功倍！",
-  "permissions": ["activeTab", "storage"],
+  "permissions": [
+    "activeTab",
+    "storage"
+  ],
+  "web_accessible_resources": [
+    {
+      "resources": [
+        "index.html"
+      ],
+      "matches": [
+        "<all_urls>"
+      ]
+    }
+  ],
+  "host_permissions": [
+    "http://localhost:3000/*"
+  ],
   "background": {
     "service_worker": "background.js"
   },
@@ -18,9 +34,15 @@
   },
   "content_scripts": [
     {
-      "matches": ["<all_urls>"],
-      "js": ["content.js"],
-      "css": ["content.css"]
+      "matches": [
+        "<all_urls>"
+      ],
+      "js": [
+        "content.js"
+      ],
+      "css": [
+        "content.css"
+      ]
     }
   ],
   "manifest_version": 3
