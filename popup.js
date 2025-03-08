@@ -65,9 +65,7 @@ async function fetchQRCode() {
     
     loginCheckInterval = setInterval(async () => {
       const res = await queryIsLogin(result.scene);
-      console.log("isLogin", res.status);
       if (res.status === 'success') {
-        console.log("登录成功", res);
         clearInterval(loginCheckInterval);
         
         // 保存用户信息

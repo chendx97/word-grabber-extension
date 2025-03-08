@@ -48,6 +48,12 @@ menuDom.addEventListener('mousedown', (e) => {
 
 let selectWord, translateRes, paraphrase;
 document.addEventListener('mouseup', async function (e) {
+  // 如果未登录，不显示翻译菜单
+  chrome.storage.local.get(['userInfo'], (result) => {
+    if (!result.userInfo) {
+      return;
+    }
+  });
   // 如果点击的是菜单内部，不做处理
   if (menuDom.contains(e.target)) {
     return;
@@ -189,14 +195,6 @@ async function translate(text) {
     return null;
   }
 }
-
-// 页面卸载时清理
-window.addEventListener('unload', () => {
-  if (timer) {
-    clearTimeout(timer);
-    timer = null;
-  }
-});
 
 // 收藏/取消收藏功能
 let wordList = [];
