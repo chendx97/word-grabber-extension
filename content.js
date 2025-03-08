@@ -49,11 +49,10 @@ menuDom.addEventListener('mousedown', (e) => {
 let selectWord, translateRes, paraphrase;
 document.addEventListener('mouseup', async function (e) {
   // 如果未登录，不显示翻译菜单
-  chrome.storage.local.get(['userInfo'], (result) => {
-    if (!result.userInfo) {
-      return;
-    }
-  });
+  const data = await chrome.storage.local.get(['userInfo']);
+  if (!data.userInfo) {
+    return;
+  }
   // 如果点击的是菜单内部，不做处理
   if (menuDom.contains(e.target)) {
     return;
